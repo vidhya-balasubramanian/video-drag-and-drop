@@ -13,9 +13,15 @@ const App = () => {
   let initialY;
   let xOffset = 0;
   let yOffset = 0;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  console.log("width "+width);
+  console.log("height "+height);
 
   React.useEffect(() => {
     const container = document.querySelector("#container");
+    var rect = container.getBoundingClientRect();
+    console.log(rect)
     container.addEventListener("touchstart", onDragStart, false);
     container.addEventListener("touchend", onDragEnd, false);
     container.addEventListener("touchmove", onDrag, false);
@@ -43,7 +49,6 @@ const App = () => {
   const onDragEnd = (e) => {
     initialX = currentX;
     initialY = currentY;
-
     active = false;
   };
 
@@ -51,7 +56,6 @@ const App = () => {
     const dragItem = document.querySelector("#imgId");
     if (active) {
       e.preventDefault();
-
       if (e.type === "touchmove") {
         currentX = e.touches[0].clientX - initialX;
         currentY = e.touches[0].clientY - initialY;

@@ -11,8 +11,8 @@ body {
   touch-action: none;
 }
 .image {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 300px;
   touch-action: none;
   user-select: none;
 }
