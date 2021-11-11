@@ -16,8 +16,6 @@ const App = () => {
   let right = 0;
   let bottom = 0;
   let newValues;
-  const objectWidth = 200;
-  const objectHeight = 300;
 
   React.useEffect(() => {
     const container = document.querySelector("#container");
@@ -48,11 +46,17 @@ const App = () => {
   };
 
   const onDragEnd = (e) => {
+    active = false;
+    console.log("newValues x "+ newValues.x);
+    console.log("newValues y "+ newValues.y);
+    console.log("current x "+ currentX);
+    console.log("current y "+ currentY);
+    console.log("newValues.x - initialX "+ (newValues.x - initialX));
+    console.log("newValues.y - initialY"+ (newValues.y - initialY));
+    // const dragItem = document.querySelector("#imgId");
+    // setTranslate(currentX, currentY, dragItem);
     initialX = currentX;
     initialY = currentY;
-    active = false;
-    // const dragItem = document.querySelector("#imgId");
-    // setTranslate(newValues.x, newValues.y, dragItem);
   };
 
   const getCornerCoord = (xVal, yVal) => {
@@ -60,24 +64,28 @@ const App = () => {
     let newY;
     if ((xVal >=0 && xVal <= right/2) && (yVal >=0 && yVal <= bottom/2)) {
       //quarter1
+      console.log("quarter1");
       newX = 0;
       newY = 0;
     } else if ((xVal >right/2 && xVal <= right) && (yVal >=0 && yVal <= bottom/2)) {
       //quarter2
+      console.log("quarter2");
       newX = right;
       newY = 0;
     } else if ((xVal >=0 && xVal <= right/2) && (yVal >bottom/2 && yVal <= bottom)) {
       //quarter3
+      console.log("quarter3");
       newX = 0;
       newY = bottom;
     } else if ((xVal >right/2 && xVal <= right) && (yVal >bottom/2 && yVal <= bottom)) {
       //quarter4
+      console.log("quarter4");
       newX = right;
       newY = bottom;
     }
     return {
-      x: newX - initialX,
-      y: newY - initialY
+      x: newX,
+      y: newY
     }
   }
 
