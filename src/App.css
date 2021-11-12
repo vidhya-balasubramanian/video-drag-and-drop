@@ -16,3 +16,12 @@ body {
   touch-action: none;
   user-select: none;
 }
+
+video {
+  object-fit: fill;
+}
+.video-wrapper {
+  width: 200px;
+  height: 300px;
+  background-color: red;
+}
