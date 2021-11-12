@@ -95,7 +95,6 @@ const App = () => {
           height="300"
           id="video"
           onClick={(e) => {
-            console.log("isDropped " + isDropped);
             if (isDropped) {
               e.preventDefault();
               e.target.pause();
