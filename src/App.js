@@ -79,7 +79,16 @@ const App = () => {
 
   return (
     <>
-      <div id="videoWrapper" style={{ left: 0, top: height - imageHeight }}>
+      <div
+        id="videoWrapper"
+        className="video-wrapper"
+        style={{
+          left: 0,
+          top: height - imageHeight,
+          width: imageWidth,
+          height: imageHeight,
+        }}
+      >
         <video
           controls
           width="200"
