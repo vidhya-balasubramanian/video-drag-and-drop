@@ -9,6 +9,10 @@ const App = () => {
   let offset = [0, 0];
   let isDown = false;
   let isDropped = false;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  const imageWidth = 200;
+  const imageHeight = 300;
 
   React.useEffect(() => {
     const wrapperElem = document.getElementById("videoWrapper");
@@ -47,10 +51,6 @@ const App = () => {
   };
 
   const getCornerCoord = (xVal, yVal) => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const imageWidth = 200;
-    const imageHeight = 300;
     let newX;
     let newY;
     if (xVal <= width / 2 && yVal <= height / 3) {
@@ -79,15 +79,21 @@ const App = () => {
 
   return (
     <>
-      <div id="videoWrapper">
-        <video controls width="200" height="300" id="video" onClick={(e) => {
-          console.log("isDropped "+isDropped)
-          if (isDropped) {
-            e.preventDefault();
-            e.target.pause();
-            isDropped = false;
-          }
-        }}>
+      <div id="videoWrapper" style={{ left: 0, top: height - imageHeight }}>
+        <video
+          controls
+          width="200"
+          height="300"
+          id="video"
+          onClick={(e) => {
+            console.log("isDropped " + isDropped);
+            if (isDropped) {
+              e.preventDefault();
+              e.target.pause();
+              isDropped = false;
+            }
+          }}
+        >
           <source src={VideoFile} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
