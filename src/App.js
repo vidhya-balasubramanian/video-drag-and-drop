@@ -35,9 +35,15 @@ const App = () => {
     const xValue = e.clientX + offset[0];
     const yValue = e.clientY + offset[1];
     const newVal = getCornerCoord(xValue, yValue);
-    wrapperElem.style.left = newVal.x + "px";
-    wrapperElem.style.top = newVal.y + "px";
-    isDropped = true;
+    const previousLeft = wrapperElem.style.left.replace('px', '');
+    const previousTop = wrapperElem.style.top.replace('px', '');
+    if ((Number(previousLeft) === newVal.x) && (Number(previousTop) === newVal.y)) {
+      return;
+    } else {
+      wrapperElem.style.left = newVal.x + "px";
+      wrapperElem.style.top = newVal.y + "px";
+      isDropped = true;
+    }
   };
 
   const onMouseMove = (e) => {
@@ -87,6 +93,10 @@ const App = () => {
           top: height - imageHeight,
           width: imageWidth,
           height: imageHeight,
+        }}
+        onClick={() => {
+          // const wrapperElem = document.getElementById("video");
+          // wrapperElem.play();
         }}
       >
         <video
