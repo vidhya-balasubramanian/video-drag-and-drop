@@ -6,81 +6,84 @@ import VideoFile from "./video1.mp4";
 import "./App.css";
 
 const App = () => {
-  let active = false;
-  let currentX;
-  let currentY;
-  let initialX;
-  let initialY;
-  let xOffset = 0;
-  let yOffset = 0;
-
-  const getDragItem = () => {
-    const dragItem = document.querySelector("#imgId");
-    return dragItem;
-  }
+  let offset = [0, 0];
+  let isDown = false;
 
   React.useEffect(() => {
-    const container = document.querySelector("#container");
-    container.addEventListener("touchstart", onDragStart, false);
-    container.addEventListener("touchend", onDragEnd, false);
-    container.addEventListener("touchmove", onDrag, false);
-    container.addEventListener("mousedown", onDragStart, false);
-    container.addEventListener("mouseup", onDragEnd, false);
-    container.addEventListener("mousemove", onDrag, false);
+    const divOverlay = document.getElementById("videoWrapper");
+    divOverlay.addEventListener("mousedown", onMouseDown, true);
+    document.addEventListener("mouseup", onMouseUp, true);
+    document.addEventListener("mousemove", onMouseMove, true);
   }, []);
 
-  const onDragStart = (e) => {
-    const dragItem = getDragItem();
-    if (e.type === "touchstart") {
-      initialX = e.touches[0].clientX - xOffset;
-      initialY = e.touches[0].clientY - yOffset;
-    } else {
-      initialX = e.clientX - xOffset;
-      initialY = e.clientY - yOffset;
-    }
-    if (e.target === dragItem) {
-      active = true;
-    }
+  const onMouseDown = (e) => {
+    isDown = true;
+    const divOverlay = document.getElementById("videoWrapper");
+    offset = [
+      divOverlay.offsetLeft - e.clientX,
+      divOverlay.offsetTop - e.clientY,
+    ];
+  };
+  const onMouseUp = (e) => {
+    isDown = false;
+    const divOverlay = document.getElementById("videoWrapper");
+    const xValue = e.clientX + offset[0];
+    const yValue = e.clientY + offset[1];
+    const newVal = getCornerCoord(xValue, yValue);
+    divOverlay.style.left = newVal.x + "px";
+    divOverlay.style.top = newVal.y + "px";
   };
 
-  const onDragEnd = (e) => {
-    active = false;
-    initialX = currentX;
-    initialY = currentY;
-  };
-
-  const onDrag = (e) => {
-    const dragItem = getDragItem();
-    if (active) {
-      e.preventDefault();
-      let clientX;
-      let clientY;
-      if (e.type === "touchmove") {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-      currentX = clientX - initialX;
-      currentY = clientY - initialY;
-      xOffset = currentX;
-      yOffset = currentY;
-      setTranslate(currentX, currentY, dragItem);
+  const onMouseMove = (e) => {
+    if (isDown) {
+      const divOverlay = document.getElementById("videoWrapper");
+      const xValue = e.clientX + offset[0];
+      const yValue = e.clientY + offset[1];
+      divOverlay.style.left = xValue + "px";
+      divOverlay.style.top = yValue + "px";
     }
   };
 
-  const setTranslate = (xPos, yPos, el) => {
-    el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+  const getCornerCoord = (xVal, yVal) => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const imageWidth = 200;
+    const imageHeight = 300;
+    let newX;
+    let newY;
+    if (xVal <= width / 2 && yVal <= height / 3) {
+      newX = 0;
+      newY = 0;
+    } else if (xVal > width / 2 && xVal <= width && yVal <= height / 3) {
+      newX = width - imageWidth;
+      newY = 0;
+    } else if (xVal <= width / 2 && yVal > height / 3 && yVal <= height) {
+      newX = 0;
+      newY = height - imageHeight;
+    } else if (
+      xVal > width / 2 &&
+      xVal <= width &&
+      yVal > height / 3 &&
+      yVal <= height
+    ) {
+      newX = width - imageWidth;
+      newY = height - imageHeight;
+    }
+    return {
+      x: newX,
+      y: newY,
+    };
   };
 
   return (
-    <div id="container" className="container">
-      <video controls width="200" height="300" id="imgId">
-        <source src={VideoFile} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-    </div>
+    <>
+      <div id="videoWrapper">
+        <video controls width="200" height="300">
+          <source src={VideoFile} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </>
   );
 };
 
